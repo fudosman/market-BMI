@@ -1,0 +1,116 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Core user identity linked to a phone number.",
+      "type": "object",
+      "properties": {
+        "phoneNumber": { "type": "string", "description": "Primary identity (unique)" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["phoneNumber", "createdAt"]
+    },
+    "Profile": {
+      "title": "Profile",
+      "description": "Extended user profile information.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "ageRange": { "type": "string", "enum": ["<18", "18-25", "26-35", "36-45", "46-55", "56-65", "65+"] },
+        "gender": { "type": "string", "enum": ["male", "female", "other", "prefer-not-to-say"] },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId"]
+    },
+    "Measurement": {
+      "title": "Measurement",
+      "description": "Health measurement record.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "deviceId": { "type": "string" },
+        "weight": { "type": "number", "description": "Weight in kg" },
+        "height": { "type": "number", "description": "Height in cm" },
+        "bmi": { "type": "number" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "weight", "height", "bmi", "timestamp"]
+    },
+    "Device": {
+      "title": "Device",
+      "description": "Physical measurement unit.",
+      "type": "object",
+      "properties": {
+        "locationId": { "type": "string" },
+        "status": { "type": "string", "enum": ["online", "offline", "maintenance"] },
+        "lastPing": { "type": "string", "format": "date-time" }
+      },
+      "required": ["locationId", "status"]
+    },
+    "Location": {
+      "title": "Location",
+      "description": "Physical marketplace or shop location.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "address": { "type": "string" },
+        "contactInfo": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Payment record for measurement services.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "amount": { "type": "number" },
+        "paymentType": { "type": "string", "enum": ["cash", "mobile_money", "card"] },
+        "status": { "type": "string", "enum": ["pending", "completed", "failed"] },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "amount", "paymentType", "status", "timestamp"]
+    },
+    "QRSession": {
+      "title": "QR Session",
+      "description": "Temporary token for secure profile access.",
+      "type": "object",
+      "properties": {
+        "token": { "type": "string" },
+        "userId": { "type": "string" },
+        "expiresAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["token", "userId", "expiresAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User documents indexed by UID."
+    },
+    "/profiles/{userId}": {
+      "schema": "Profile",
+      "description": "User profile data."
+    },
+    "/measurements/{measurementId}": {
+      "schema": "Measurement",
+      "description": "Global collection of measurements."
+    },
+    "/devices/{deviceId}": {
+      "schema": "Device",
+      "description": "Device registry."
+    },
+    "/locations/{locationId}": {
+      "schema": "Location",
+      "description": "Location registry."
+    },
+    "/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "Payment records."
+    },
+    "/qr_sessions/{sessionId}": {
+      "schema": "QRSession",
+      "description": "Active QR access sessions."
+    }
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "name": "Stay Healthy",
+  "description": "Smart Public Health Measurement System for marketplaces. Track weight, height, and BMI over time using phone-based identity.",
+  "requestFramePermissions": []
+}
